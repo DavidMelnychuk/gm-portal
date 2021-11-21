@@ -11,25 +11,21 @@ const main = async () => {
     let contractBalance = await hre.ethers.provider.getBalance(
         gmContract.address
     );
-    
+
     console.log(
         'Contract balance:',
         hre.ethers.utils.formatEther(contractBalance)
       );
 
 
-
-    let gmCount;
-    gmCount = await gmContract.getTotalGMs();
-    console.log(gmCount.toNumber());
-
     let gmTxn = await gmContract.gm("A message!");
     await gmTxn.wait();
 
-    gmTxn = await gmContract.connect(randomPerson).gm("Another Message!");
-    await gmTxn.wait();
-
-    gmCount = await gmContract.getTotalGMs();
+    contractBalance = await hre.ethers.provider.getBalance(gmContract.address);
+    console.log(
+        'Contract balance:',
+        hre.ethers.utils.formatEther(contractBalance)
+    );
 
     let allGMs = await gmContract.getAllGMs();
     console.log(allGMs);

@@ -19,7 +19,7 @@ contract GMPortal {
 
     GM[] GMs;
     
-    constructor() {
+    constructor() payable {
         console.log("GM from Vancouver, WAGMI");
     }
 
