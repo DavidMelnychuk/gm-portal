@@ -1,23 +1,38 @@
 const main = async () => {
     const [owner, randomPerson] = await hre.ethers.getSigners();
-    const waveContractFactory = await hre.ethers.getContractFactory('WavePortal');
-    const waveContract = await waveContractFactory.deploy();
-    await waveContract.deployed();
-    console.log("Contract deployed to:", waveContract.address);
+    const gmContractFactory = await hre.ethers.getContractFactory('GMPortal');
+    const gmContract = await gmContractFactory.deploy({
+        value: hre.ethers.utils.parseEther('0.1'),
+    });
+    await gmContract.deployed();
+    console.log("Contract deployed to:", gmContract.address);
     console.log("Contract deployed by:", owner.address);
 
-    let waveCount;
-    waveCount = await waveContract.getTotalWaves();
+    let contractBalance = await hre.ethers.provider.getBalance(
+        gmContract.address
+    );
+    
+    console.log(
+        'Contract balance:',
+        hre.ethers.utils.formatEther(contractBalance)
+      );
 
-    let waveTxn = await waveContract.wave();
-    await waveTxn.wait();
 
-    waveCount = await waveContract.getTotalWaves();
 
-    waveTxn = await waveContract.connect(randomPerson).wave();
-    await waveTxn.wait();
+    let gmCount;
+    gmCount = await gmContract.getTotalGMs();
+    console.log(gmCount.toNumber());
 
-    waveCount = await waveContract.getTotalWaves();
+    let gmTxn = await gmContract.gm("A message!");
+    await gmTxn.wait();
+
+    gmTxn = await gmContract.connect(randomPerson).gm("Another Message!");
+    await gmTxn.wait();
+
+    gmCount = await gmContract.getTotalGMs();
+
+    let allGMs = await gmContract.getAllGMs();
+    console.log(allGMs);
   };
   
   const runMain = async () => {
