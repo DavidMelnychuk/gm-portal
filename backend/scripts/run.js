@@ -11,15 +11,17 @@ const main = async () => {
     let contractBalance = await hre.ethers.provider.getBalance(
         gmContract.address
     );
-
     console.log(
         'Contract balance:',
         hre.ethers.utils.formatEther(contractBalance)
       );
 
 
-    let gmTxn = await gmContract.gm("A message!");
+    let gmTxn = await gmContract.gm("gm 1");
     await gmTxn.wait();
+
+    let gmTxn2 = await gmContract.gm("gm 2!");
+    await gmTxn2.wait();
 
     contractBalance = await hre.ethers.provider.getBalance(gmContract.address);
     console.log(
